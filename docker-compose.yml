@@ -1,0 +1,19 @@
+version: '2'
+volumes:
+  cache:
+    external: false
+services:
+  redis:
+    image: redis
+  postgres:
+    image: postgres:9.4
+  test:
+    image: python:2.7-alpine
+    working_dir: /ci
+    command: ./test.sh
+    volumes:
+      - .:/ci:ro
+      - cache:/root/.cache
+    links:
+      - redis
+      - postgres
